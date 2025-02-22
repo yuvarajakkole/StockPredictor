@@ -1,0 +1,5 @@
+flask
+yfinance
+scikit-learn
+pandas
+numpy

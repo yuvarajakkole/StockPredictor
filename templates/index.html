@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian Stock Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.0/dist/chartjs-chart-financial.min.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Stock Categories</h2>
+        {% for category, stocks in stock_categories.items() %}
+            <div class="category">
+                <h3>{{ category }}</h3>
+                <ul>
+                    {% for stock_name, symbol in stocks.items() %}
+                        <li onclick="fetchPrediction('{{ symbol }}')" class="stock-item" data-symbol="{{ symbol }}">{{ stock_name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="main-content">
+        <h1>Indian Stock Price Predictor</h1>
+        <div id="current-price" class="price-display"></div>
+        <select id="chart-type" onchange="updateChartFromSelection()">
+            <option value="line">Line</option>
+            <option value="candlestick">Candlestick</option>
+            <option value="bar">Bar</option>
+        </select>
+        <canvas id="stockChart" width="800" height="400"></canvas>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
