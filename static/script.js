@@ -4,18 +4,18 @@ let currentData = null;
 Chart.register(ChartFinancial.CandlestickController, ChartFinancial.CandlestickElement);
 
 function fetchPrediction(symbol) {
-    console.log('Fetching data for symbol:', symbol); // Debug log
+    console.log('Fetching data for symbol:', symbol);
     fetch('/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `symbol=${symbol}`
     })
     .then(response => {
-        console.log('Response status:', response.status); // Debug log
+        console.log('Response status:', response.status);
         return response.json();
     })
     .then(data => {
-        console.log('Received data:', data); // Debug log
+        console.log('Received data:', data);
         if (data.error) {
             alert(data.error);
             return;
@@ -33,7 +33,53 @@ function updateChart(data) {
     
     if (stockChart) stockChart.destroy();
 
-    console.log('Rendering chart type:', chartType); // Debug log
+    console.log('Rendering chart type:', chartType);
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                title: { display: true, text: 'Date', color: '#ffffff' },
+                ticks: { color: '#e6e6e6' },
+                grid: { color: '#3e4a61' }
+            },
+            y: {
+                title: { display: true, text: 'Price (INR)', color: '#ffffff' },
+                ticks: { color: '#e6e6e6' },
+                grid: { color: '#3e4a61' }
+            }
+        },
+        plugins: {
+            legend: { labels: { color: '#ffffff' } },
+            tooltip: {
+                enabled: true,
+                mode: 'index',
+                intersect: false,
+                backgroundColor: '#2d3748',
+                titleColor: '#ffffff',
+                bodyColor: '#e6e6e6',
+                borderColor: '#8e44ad',
+                borderWidth: 1,
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) label += ': ';
+                        if (context.parsed.y !== null) {
+                            label += `₹${context.parsed.y.toFixed(2)}`;
+                        } else if (context.parsed.c !== null) {
+                            label += `Open: ₹${context.parsed.o.toFixed(2)}, Close: ₹${context.parsed.c.toFixed(2)}`;
+                        }
+                        return label;
+                    }
+                }
+            }
+        },
+        hover: {
+            mode: 'index',
+            intersect: false
+        }
+    };
 
     if (chartType === 'line') {
         stockChart = new Chart(ctx, {
@@ -44,24 +90,31 @@ function updateChart(data) {
                     {
                         label: 'Historical Close',
                         data: data.historical_ohlc.close.concat(Array(30).fill(null)),
-                        borderColor: '#3498db',
-                        fill: false
+                        borderColor: '#f1c40f', // Warm gold
+                        borderWidth: 3, // Thicker line
+                        fill: false,
+                        pointRadius: 0, // No default points
+                        pointHoverRadius: 5, // Visible dot on hover
+                        pointHoverBackgroundColor: '#f1c40f',
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 2
                     },
                     {
                         label: 'Predicted Prices',
                         data: data.predicted,
-                        borderColor: '#e74c3c',
+                        borderColor: '#8e44ad', // Vivid purple
+                        borderWidth: 3, // Thicker line
                         borderDash: [5, 5],
-                        fill: false
+                        fill: false,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: '#8e44ad',
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 2
                     }
                 ]
             },
-            options: {
-                scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Price (INR)' } }
-                }
-            }
+            options: chartOptions
         });
     } else if (chartType === 'candlestick') {
         const candlestickData = data.dates.map((date, i) => ({
@@ -79,18 +132,15 @@ function updateChart(data) {
                     label: 'Historical OHLC',
                     data: candlestickData,
                     color: {
-                        up: '#2ecc71',
-                        down: '#e74c3c',
-                        unchanged: '#95a5a6'
-                    }
+                        up: '#f1c40f', // Gold for gains
+                        down: '#8e44ad', // Purple for losses
+                        unchanged: '#e6e6e6'
+                    },
+                    borderColor: '#ffffff',
+                    borderWidth: 2 // Thicker borders
                 }]
             },
-            options: {
-                scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Price (INR)' } }
-                }
-            }
+            options: chartOptions
         });
     } else if (chartType === 'bar') {
         stockChart = new Chart(ctx, {
@@ -100,15 +150,12 @@ function updateChart(data) {
                 datasets: [{
                     label: 'Historical Close',
                     data: data.historical_ohlc.close,
-                    backgroundColor: '#3498db'
+                    backgroundColor: '#f1c40f',
+                    borderColor: '#ffffff',
+                    borderWidth: 2 // Thicker borders
                 }]
             },
-            options: {
-                scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Price (INR)' } }
-                }
-            }
+            options: chartOptions
         });
     }
 }

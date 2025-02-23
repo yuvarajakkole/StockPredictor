@@ -1,32 +1,48 @@
+/* Import a clean, modern font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f4f8;
+    background-color: #1a2533; /* Deeper, vibrant blue background */
     display: flex;
-    color: #333;
+    color: #e6e6e6; /* Slightly brighter gray text */
+    height: 100vh;
+    overflow: hidden;
 }
 
 .sidebar {
     width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    height: 100vh;
-    overflow-y: auto;
+    background-color: #2d3748; /* Richer blue-gray */
+    color: #e6e6e6;
+    height: 100%;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #8e44ad; /* Vivid purple border */
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.sidebar:hover {
+    background-color: #374151; /* Slightly lighter on hover */
 }
 
 .sidebar h2 {
-    color: #ecf0f1;
+    color: #ffffff;
     font-size: 1.5em;
     margin-bottom: 20px;
 }
 
 .category h3 {
-    color: #3498db;
+    color: #8e44ad; /* Vivid purple */
     font-size: 1.2em;
     margin: 15px 0 10px;
+    transition: color 0.3s ease;
+}
+
+.category h3:hover {
+    color: #b565d9; /* Lighter purple on hover */
 }
 
 ul {
@@ -37,56 +53,84 @@ ul {
 .stock-item {
     padding: 10px;
     margin: 5px 0;
-    background-color: #34495e;
+    background-color: #3e4a61; /* Muted blue */
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .stock-item:hover {
-    background-color: #1abc9c;
+    background-color: #8e44ad; /* Vivid purple */
+    color: #ffffff;
+    transform: translateX(5px); /* Slightly larger shift */
+    box-shadow: 0 4px 8px rgba(142, 68, 173, 0.3); /* Purple shadow */
 }
 
 .main-content {
     flex-grow: 1;
     padding: 20px;
     text-align: center;
+    background-color: #1a2533;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: background-color 0.3s ease;
+}
+
+.main-content:hover {
+    background-color: #212d40; /* Slightly lighter blue on hover */
 }
 
 h1 {
-    color: #2c3e50;
+    color: #ffffff;
     font-size: 2em;
     margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+h1:hover {
+    color: #f1c40f; /* Warm gold on hover */
 }
 
 .price-display {
     font-size: 1.5em;
-    color: #e74c3c;
+    color: #f1c40f; /* Warm gold */
     margin-bottom: 20px;
-    background-color: #fff;
+    background-color: #2d3748;
     padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #8e44ad;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.price-display:hover {
+    background-color: #3e4a61;
+    transform: scale(1.03); /* Slight scale-up */
 }
 
 select {
     padding: 10px;
     font-size: 1em;
     border-radius: 5px;
-    background-color: #3498db;
-    color: white;
+    background-color: #8e44ad;
+    color: #ffffff;
     border: none;
     cursor: pointer;
     margin-bottom: 20px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 select:hover {
-    background-color: #2980b9;
+    background-color: #703688; /* Darker purple */
+    box-shadow: 0 2px 6px rgba(142, 68, 173, 0.4); /* Subtle shadow */
 }
 
 canvas {
-    background-color: white;
+    background-color: #2d3748;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #8e44ad;
+    max-height: calc(100vh - 200px);
+    width: 100%;
 }
